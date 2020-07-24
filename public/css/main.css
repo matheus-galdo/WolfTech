@@ -25,10 +25,75 @@ html, body {
 header {
     grid-area: linha1;
     background-color: #323232;
+    color: #fff;
+
+
+    
+
 }
-.container{
-    grid-area: linha2;
+
+
+nav .logo{
+    width: 20%;
+    float: left;
 }
+
+.pesquisa{
+    width: 80%;
+    float: left;
+}
+
+#pesquisar{
+    margin: 8% auto auto 12%;
+    width: 80%;
+
+    height: 2.5rem;
+    border-radius: 3px;
+    border: 0;
+    outline: none;
+    padding: 1.2rem;
+
+    font-size: 1.2rem;
+
+}
+
+.search{
+    clear: both;
+    width: 100%;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+.clearfix {
+    display: inline-block;
+}
+
+.menu{
+    display: flex;
+    flex-direction: row;
+    padding-top: 1rem;
+    height: 3rem;
+
+    border-top:5px solid #6363ea ;
+    text-align: center;
+    list-style: none;
+    
+    
+}
+
+.menu li{
+    flex: 1;
+}
+
+
+
 
 footer{
     grid-area: linha3;
@@ -44,10 +109,9 @@ footer{
 
 
 
-nav ul{
-    border-top:3px solid #6363ea ;
+
+.container{
+    grid-area: linha2;
 }
 
-nav .logo{
-    width: 20%;
-}
+
