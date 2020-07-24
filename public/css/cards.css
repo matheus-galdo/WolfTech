@@ -1,0 +1,59 @@
+.destaques{
+    
+    padding: 5%;
+
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 100%);
+    grid-gap: 1rem;
+    justify-content: space-between;
+    grid-auto-rows: 1fr
+}
+
+
+
+@media only screen and (min-width: 800px){
+    .destaques{
+        grid-template-columns: repeat(auto-fill, 23%);
+    }    
+}
+
+@media only screen and (min-width: 600px) and (max-width: 799px){
+    .destaques{
+        grid-template-columns: repeat(auto-fill, 48%);
+    }    
+}
+
+
+
+
+
+.card{
+    border-radius: 2px;
+    box-shadow: 1px 1px 5px 0px rgba(0, 0, 0,0.2);
+
+    padding: 5%;
+
+    text-decoration: none;
+    color: black;
+    border: 1px solid #fff;
+}
+
+.card h1{
+    font-size: 1.25rem;
+}
+
+.card .valor{
+    color: #6363ea;
+    font-size: 1.1rem;
+}
+
+.card img{
+    width: 100%;
+   
+}
+.card:hover{
+    transition: 0.5s;
+    transform: scale(1.05);
+    border: 1px solid #aaa;
+}

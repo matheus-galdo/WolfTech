@@ -18,5 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('produto/detalhes', function () {
-    return view('loja/produto');
+    return view('loja/produto', [
+        'nomeProduto' => 'Processador i5 8400'
+    ]);
 });
