@@ -1,8 +1,4 @@
-.destaques{
-    
-    padding: 5%;
-
-
+.cards{
     display: grid;
     grid-template-columns: repeat(auto-fill, 100%);
     grid-gap: 1rem;
@@ -13,13 +9,13 @@
 
 
 @media only screen and (min-width: 800px){
-    .destaques{
+    .cards{
         grid-template-columns: repeat(auto-fill, 23%);
     }    
 }
 
 @media only screen and (min-width: 600px) and (max-width: 799px){
-    .destaques{
+    .cards{
         grid-template-columns: repeat(auto-fill, 48%);
     }    
 }
@@ -37,10 +33,13 @@
     text-decoration: none;
     color: black;
     border: 1px solid #fff;
+    background-color: #fff;
+
+    transition: 0.5s;
 }
 
 .card h1{
-    font-size: 1.25rem;
+    font-size: 1.4rem;
 }
 
 .card .valor{
@@ -53,7 +52,7 @@
    
 }
 .card:hover{
-    transition: 0.5s;
+    
     transform: scale(1.05);
     border: 1px solid #aaa;
 }

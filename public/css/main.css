@@ -10,7 +10,16 @@
 html, body {
     width: 100%;
     height: 100%;
+    background-color: #ddd;
 }
+
+.preload * {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -ms-transition: none !important;
+    -o-transition: none !important;
+}
+
 .main {
     min-height: 100%;
     display: grid;
@@ -33,11 +42,27 @@ header {
 nav .navBtns{
     text-align: center;
 }
+.btnNav{
+    background-color: transparent;
+    border: 0;
+    color: #6363ea;
+    outline: none;
+    transition: 0.3s;
+}
+
+.btnNav:hover{
+    color:#5353b7;
+}
 
 
 nav .logo{
     width: 30%;
     float: left;
+}
+
+nav .logo:hover{
+    transition: 0.3s;
+    filter: brightness(0.80);
 }
 
 .pesquisa{
@@ -53,7 +78,7 @@ nav .logo{
     border-radius: 3px;
     border: 0;
     outline: none;
-    padding: 1rem;
+    padding: 0.5rem;
 
     font-size: 1.2rem;
 

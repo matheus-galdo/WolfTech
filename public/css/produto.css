@@ -1,0 +1,43 @@
+.produto{
+    box-shadow: 1px 1px 5px 0px rgba(0, 0, 0,0.2);
+    background-color: #fff;
+    margin: 5%;
+    padding: 5%;
+    border-radius: 3px;
+}
+
+.produto section:not(:first-child){
+    border-top: 1px solid #6363ea;
+    padding: 10px auto;
+}
+.produto section{
+    padding: 10px 0;
+}
+
+.detalhes .foto img{
+    width: 100%;
+}
+.valor{
+    color: #6363ea;
+    font-size: 1.1rem;
+}
+
+.btnComprar{
+    background-color: #6363ea;
+    border: 0;
+    outline: 0;
+    width: 20%;
+    height: 3rem;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 1.3rem;
+    transition: 0.3s;
+}
+
+.btnComprar:hover{
+    background-color: #5353b7;
+}
+
+.btnComprar:active{
+    background-color: #2d2d7f;
+}

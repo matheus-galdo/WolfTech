@@ -15,7 +15,7 @@
       rel="stylesheet">
     <link rel="shortcut icon" href="{{url('favicon.png')}}" />
 </head>
-<body>
+<body class="preload">
     <div class="main">
         <header>
             <nav>
@@ -25,18 +25,18 @@
                     </a>
                     
                     <div class="navBtns">
-                        <span class="material-icons">
+                        <button class="btnNav material-icons">
                             shopping_cart
-                        </span>
+                        </button>
                         
-                        <span class="material-icons">
+                        <button class="btnNav material-icons">
                             menu
-                        </span>
+                        </button>
                         
                         
-                        <span class="material-icons">
+                        <button class="btnNav material-icons">
                             account_circle
-                        </span>
+                        </button>
 
                     </div>
 
@@ -62,6 +62,6 @@
             <p>Galdo que fez - Hacker Boys - 2020</p>
         </footer>
     </div>
-    
+    <script src="{{url('js/preload.js')}}"></script>
 </body>
 </html>
