@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Overpass&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
+      
     <link rel="shortcut icon" href="{{url('favicon.png')}}" />
 </head>
 <body class="preload">
@@ -52,8 +53,8 @@
                 
                 
                 <ul class="menu">
-                    <li>Categorias</li>
-                    <ul class="dropdown">
+                    <li id="dropdownBtn">Categorias <span class="arrow">&#11206</span></li>
+                    <ul class="dropdown hide">
                         <li>Gabinete</li>
                         <li>Placa Mãe</li>
                         <li>Placa de Vídeo</li>

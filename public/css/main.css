@@ -175,10 +175,33 @@ nav .logo:hover{
     color: #6363ea;
 }
 
+#dropdownBtn{
+    cursor: pointer;
+}
 .dropdown{
     list-style: none;
     display: block;
     position: absolute;
+    left: 5%;
+    top: 220px;
+    background-color: #323232;
+    z-index: 2;
+}
+
+.dropdown li{
+    padding: 0.5rem 2rem;
+}
+
+.dropdown li:hover{
+    background-color: #4b4b4b;
+}
+
+.arrow{
+    font-size: 0.8rem;
+}
+
+.hide{
+    display: none;
 }
 /* ==================================================== */
 
@@ -250,6 +273,10 @@ footer{
 
     .menu{
         display: flex;
+    }
+
+    .dropdown{
+        left: 0%;
     }
 }
 
