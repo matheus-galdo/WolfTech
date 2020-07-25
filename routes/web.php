@@ -22,3 +22,7 @@ Route::get('produto/detalhes', function () {
         'nomeProduto' => 'Processador i5 8400'
     ]);
 });
+
+Route::get('buscar/', function ($pesquisar) {
+    echo $pesquisar;
+});

@@ -8,16 +8,26 @@
 
 
 
-@media only screen and (min-width: 800px){
+@media only screen and (min-width: 900px){
     .cards{
         grid-template-columns: repeat(auto-fill, 23%);
     }    
+
+    .foto-container{
+        width: 100%;
+        height: 260px;
+    }
 }
 
-@media only screen and (min-width: 600px) and (max-width: 799px){
+@media only screen and (min-width: 480px) and (max-width: 899px){
     .cards{
         grid-template-columns: repeat(auto-fill, 48%);
-    }    
+    }   
+
+    .foto-container{
+        width: 100%;
+        height: 260px;
+    }
 }
 
 
@@ -37,7 +47,10 @@
 
     transition: 0.5s;
 }
-
+.foto-container{
+    width: 100%;
+    height: 340px;
+}
 .card h1{
     font-size: 1.4rem;
 }

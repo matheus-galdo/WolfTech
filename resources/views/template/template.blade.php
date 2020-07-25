@@ -20,36 +20,55 @@
         <header>
             <nav>
                 <div class="search clearfix">
-                    <a href="{{url('/')}}">
-                        <img class="logo" src="{{url('wolftech-min.png')}}" alt="logotipo">
+                    <a class="logo" href="{{url('/')}}">
+                        <img class="" src="{{url('wolftech-tiny.png')}}" alt="logotipo">
                     </a>
                     
-                    <div class="navBtns">
+                    <div class="nav-btn-container">
                         <button class="btnNav material-icons">
                             shopping_cart
                         </button>
                         
-                        <button class="btnNav material-icons">
+                        {{-- <button class="btnNav material-icons">
                             menu
                         </button>
-                        
-                        
+                         --}}
+                        <span class="carrinho-counter">
+                            10
+                        </span>
+
                         <button class="btnNav material-icons">
                             account_circle
                         </button>
-
                     </div>
 
-                    <form action="" class="pesquisa">
-                        <input type="text" placeholder="Buscar por produtos" name="pesquisar" id="pesquisar">
+                    <form action="/buscar/" class="pesquisa">
+                        <div class="form-wrapper">
+                            <input type="text" placeholder="Buscar por produtos" name="pesquisar" id="pesquisar">
+                            <button class="search-btn"><span class="material-icons">search</span></button> 
+                        </div>
                     </form>
                 </div>
                 
                 
                 <ul class="menu">
-                    <li>Link</li>
-                    <li>Link</li>
-                    <li>Link</li>
+                    <li>Categorias</li>
+                    <ul class="dropdown">
+                        <li>Gabinete</li>
+                        <li>Placa Mãe</li>
+                        <li>Placa de Vídeo</li>
+                        <li>Processador</li>
+                        <li>Memória RAM</li>
+                        <li>Fonte</li>
+                        <li>HD</li>
+                        <li>SSD</li>
+                        <li>Mouse</li>
+                        <li>Teclado</li>
+                    </ul>
+
+                    <li>Monte seu PC</li>
+                    <li>Sobre</li>
+                    <li>Contato</li>
                 </ul>
             </nav>
         </header>
