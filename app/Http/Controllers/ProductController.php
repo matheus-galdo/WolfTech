@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\Product;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
 
