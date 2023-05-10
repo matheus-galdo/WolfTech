@@ -4,12 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Models\User;
-use Ramsey\Uuid\Uuid;
-use Illuminate\Http\Request;
+use App\Service\AuthService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use stdClass;
 
 class AuthController extends Controller
 {
@@ -20,58 +16,44 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $credentials = $request->only('email', 'password');
-        $token = Auth::attempt($credentials);
-
-        if (!$token) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Unauthorized',
-            ], 401);
+        try {
+            $credentials = $request->only('email', 'password');
+            $response = AuthService::login($credentials);
+            return response()->json($response);
+        } catch (\Throwable $th) {
+            return response()->json(["message" => $th->getMessage()], 401);
         }
-
-        $user = Auth::user();
-        $response = $this->makeCredentialsResponse($token, $user);
-        return response()->json($response);
     }
 
     public function register(RegisterRequest $request)
     {
-        $user = User::create([
-            'id' => Uuid::uuid4(),
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        $token = Auth::login($user);
-        $response = $this->makeCredentialsResponse($token, $user);
-        return response()->json($response, 201);
+        try {
+            $credentials = $request->only(['name', 'email', 'password']);
+            $response = AuthService::register($credentials);
+            return response()->json($response, 201);
+        } catch (\Throwable $th) {
+            return response()->json(["message" => $th->getMessage()], 401);
+        }
     }
-
-
 
     public function logout()
     {
-        Auth::logout();
-        return response()->json(['message' => 'Successfully logged out'], 200);
+        try {
+            AuthService::logout();
+            return response()->json(['message' => 'Successfully logged out'], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json(["message" => $th->getMessage()], 401);
+        }
     }
 
     public function refresh()
     {
-        return response()->json(
-            $this->makeCredentialsResponse(Auth::refresh(), Auth::user())
-        );
-    }
-
-    public function makeCredentialsResponse($token, $user)
-    {
-        return [
-            'user' => $user,
-            'authorization' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ];
+        try {
+            $response = AuthService::refresh();
+            return response()->json($response, 201);
+        } catch (\Throwable $th) {
+            return response()->json(["message" => $th->getMessage()], 400);
+        }
     }
 }
