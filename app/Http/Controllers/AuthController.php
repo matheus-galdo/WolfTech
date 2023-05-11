@@ -2,10 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\DataObjects\UserDataObject;
+use App\Exceptions\TesteException;
+use App\Http\Middleware\ErrorHandlerMiddleware;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Service\AuthService;
-use Illuminate\Support\Facades\Auth;
+use Closure;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Throwable;
+
+class ErroLogin extends Exception
+{
+    
+}
+
 
 class AuthController extends Controller
 {
@@ -20,19 +32,26 @@ class AuthController extends Controller
             $credentials = $request->only('email', 'password');
             $response = AuthService::login($credentials);
             return response()->json($response);
-        } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 401);
+        } catch (Throwable $th) {
+            throw $th;
         }
     }
 
-    public function register(RegisterRequest $request)
+
+    public function register(RegisterRequest $request, Closure $next): JsonResponse
     {
         try {
-            $credentials = $request->only(['name', 'email', 'password']);
-            $response = AuthService::register($credentials);
-            return response()->json($response, 201);
+            $requestCredentials = new UserDataObject(
+                id: null,
+                name: $request->input('name'),
+                email: $request->input('email'),
+                password: $request->input('email'),
+            );
+
+            $response = AuthService::register($requestCredentials);
+            return response()->json(status: 201, data: $response);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 401);
+            return $th;
         }
     }
 

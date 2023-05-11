@@ -3,7 +3,8 @@
 namespace App\Service;
 
 use App\Models\User;
-use Exception;
+use App\DataObjects\UserDataObject;
+use App\Exceptions\InvalidCredentialsException;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,22 +18,24 @@ class AuthService
     {
         $token = Auth::attempt($credentials);
         if (!$token) {
-            throw new Exception("Invalid credentials", 1);
+            throw new InvalidCredentialsException("Invalid credentials", 401);
         }
 
         $user = Auth::user();
         return self::getTokenResponse($token, $user);
     }
 
-    public static function register($credentials)
+    public static function register(UserDataObject $credentials)
     {
+        $userData = new UserDataObject(
+            id: Uuid::uuid4(),
+            name: $credentials->name,
+            email: $credentials->email,
+            password: Hash::make($credentials->password),
+        );
+        
         //todo: repository de user -> createUser
-        $user = User::create([
-            'id' => Uuid::uuid4(),
-            'name' => $credentials->name,
-            'email' => $credentials->email,
-            'password' => Hash::make($credentials->password),
-        ]);
+        $user = User::create($userData->toArray());
 
         $token = Auth::login($user);
         return self::getTokenResponse($token, $user);
