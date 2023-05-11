@@ -4,8 +4,7 @@ namespace App\Service;
 
 use App\Models\User;
 use App\DataObjects\UserDataObject;
-use App\Http\Requests\RegisterRequest;
-use Exception;
+use App\Exceptions\InvalidCredentialsException;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +18,7 @@ class AuthService
     {
         $token = Auth::attempt($credentials);
         if (!$token) {
-            throw new Exception("Invalid credentials", 1);
+            throw new InvalidCredentialsException("Invalid credentials", 401);
         }
 
         $user = Auth::user();
