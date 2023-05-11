@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use App\Models\User;
+use App\DataObjects\UserDataObject;
+use App\Http\Requests\RegisterRequest;
 use Exception;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\Auth;
@@ -24,15 +26,17 @@ class AuthService
         return self::getTokenResponse($token, $user);
     }
 
-    public static function register($credentials)
+    public static function register(UserDataObject $credentials)
     {
+        $userData = new UserDataObject(
+            id: Uuid::uuid4(),
+            name: $credentials->name,
+            email: $credentials->email,
+            password: Hash::make($credentials->password),
+        );
+        
         //todo: repository de user -> createUser
-        $user = User::create([
-            'id' => Uuid::uuid4(),
-            'name' => $credentials->name,
-            'email' => $credentials->email,
-            'password' => Hash::make($credentials->password),
-        ]);
+        $user = User::create($userData->toArray());
 
         $token = Auth::login($user);
         return self::getTokenResponse($token, $user);

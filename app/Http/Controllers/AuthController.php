@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\DataObjects\UserDataObject;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Service\AuthService;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
@@ -25,12 +26,18 @@ class AuthController extends Controller
         }
     }
 
-    public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request): JsonResponse
     {
         try {
-            $credentials = $request->only(['name', 'email', 'password']);
-            $response = AuthService::register($credentials);
-            return response()->json($response, 201);
+            $requestCredentials = new UserDataObject(
+                id: null,
+                name: $request->input('name'),
+                email: $request->input('email'),
+                password: $request->input('email'),
+            );
+
+            $response = AuthService::register($requestCredentials);
+            return response()->json(status: 201, data: $response);
         } catch (\Throwable $th) {
             return response()->json(["message" => $th->getMessage()], 401);
         }
