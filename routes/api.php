@@ -20,21 +20,17 @@ Route::get('/', function () {
     return response()->json(["message" => "ok"]);
 });
 
-Route::apiResource('products', ProductController::class);
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+//public routes
+Route::get('products', [ProductController::class, 'index']);
+Route::get('products/{product}', [ProductController::class, 'show']);
 
 // protected routes
 Route::middleware(['auth:api'])->group(function () {
     Route::get('teste', [ProductController::class, 'store']);
 });
 
-Route::controller(AuthController::class)->group(function () {
-    Route::post('login', 'login');
-    Route::post('register', 'register');
-    Route::post('logout', 'logout');
-    Route::post('refresh', 'refresh');
-});
+//auth routes
+Route::get('login', [AuthController::class, 'login']);
+Route::get('register', [AuthController::class, 'register']);
+Route::get('logout', [AuthController::class, 'logout']);
+Route::get('refresh', [AuthController::class, 'refresh']);
