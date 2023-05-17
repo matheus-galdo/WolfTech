@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\DataObjects\UserCredentialsDataObject;
 use App\Models\User;
 use App\DataObjects\UserDataObject;
 use App\Exceptions\InvalidCredentialsException;
@@ -14,9 +15,9 @@ use Illuminate\Support\Facades\Hash;
  */
 class AuthService
 {
-    public static function login(array $credentials)
+    public static function login(UserCredentialsDataObject $credentials)
     {
-        $token = Auth::attempt($credentials);
+        $token = Auth::attempt($credentials->toArray());
         if (!$token) {
             throw new InvalidCredentialsException("Invalid credentials", 401);
         }
