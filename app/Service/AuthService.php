@@ -35,7 +35,7 @@ class AuthService
             password: Hash::make($credentials->password),
         );
         
-        //todo: repository de user -> createUser
+        //TODOS: repository de user -> createUser
         $user = User::create($userData->toArray());
 
         $token = Auth::login($user);
