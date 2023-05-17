@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataObjects\UserCredentialsDataObject;
 use App\DataObjects\UserDataObject;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
@@ -16,9 +17,13 @@ class AuthController extends Controller
     }
 
     public function login(LoginRequest $request)
-    {
-        $credentials = $request->only('email', 'password');
-        $response = $this->authService->login($credentials);
+    {        
+        $requestCredentials = new UserCredentialsDataObject(
+            email: $request->input('email'),
+            password: $request->input('password'),
+        );
+        
+        $response = $this->authService->login($requestCredentials);
         return response()->json($response);
     }
 
@@ -29,7 +34,7 @@ class AuthController extends Controller
             id: null,
             name: $request->input('name'),
             email: $request->input('email'),
-            password: $request->input('email'),
+            password: $request->input('password'),
         );
 
         $response = $this->authService->register($requestCredentials);

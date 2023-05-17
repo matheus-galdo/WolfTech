@@ -30,7 +30,7 @@ Route::middleware(['auth:api'])->group(function () {
 });
 
 //auth routes
-Route::get('login', [AuthController::class, 'login']);
-Route::get('register', [AuthController::class, 'register']);
-Route::get('logout', [AuthController::class, 'logout']);
-Route::get('refresh', [AuthController::class, 'refresh']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('logout', [AuthController::class, 'logout']);
+Route::post('refresh', [AuthController::class, 'refresh']);

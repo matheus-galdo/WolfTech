@@ -36,6 +36,14 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     /**
+     * The casting of the id column
+     * 
+     * This model uses uuid as id type, so that's why it's casting the id as string
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
