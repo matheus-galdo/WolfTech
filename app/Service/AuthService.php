@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
  */
 class AuthService
 {
-    public static function login($credentials)
+    public static function login(array $credentials)
     {
         $token = Auth::attempt($credentials);
         if (!$token) {

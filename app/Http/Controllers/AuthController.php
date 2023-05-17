@@ -29,7 +29,7 @@ class AuthController extends Controller
             id: null,
             name: $request->input('name'),
             email: $request->input('email'),
-            password: $request->input('email'),
+            password: $request->input('password'),
         );
 
         $response = $this->authService->register($requestCredentials);
