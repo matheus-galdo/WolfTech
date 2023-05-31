@@ -2,7 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\DataObjects\UserDataObject;
+use App\Models\Cart;
+use App\Models\CartProduct;
+use App\Models\Product;
+use App\Service\CartService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Ramsey\Uuid\Uuid;
 
 class CartController extends Controller
 {
@@ -19,7 +26,18 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = Auth::user();
+
+        $userData = new UserDataObject(
+            id: $user->id,
+            name: $user->name,
+            email: $user->email,
+            password: '',
+        );
+  
+        $cart = new CartService();
+        $addedProduct = $cart->addProductToCart($userData);
+        return response()->json(status: 201, data: $addedProduct);
     }
 
     /**
