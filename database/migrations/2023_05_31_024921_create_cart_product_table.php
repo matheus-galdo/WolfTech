@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('cart_product', function (Blueprint $table) {
             $table->id();
             $table->integer('ammount');
-            $table->foreignId('cart_id');
-            $table->foreignId('products_id');
+
+            $table->integer('cart_id');
+            $table->foreign('cart_id')->references('id')->on('cart')->onUpdate('cascade')->onDelete('cascade');
+
+            $table->uuid('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
