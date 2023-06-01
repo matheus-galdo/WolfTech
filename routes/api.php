@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,8 @@ Route::get('products/{product}', [ProductController::class, 'show']);
 // protected routes
 Route::middleware(['auth:api'])->group(function () {
     Route::get('teste', [ProductController::class, 'store']);
+
+    Route::get('cart', [CartController::class, 'store']);
 });
 
 //auth routes
