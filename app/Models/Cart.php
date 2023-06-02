@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
 
@@ -25,9 +26,14 @@ class Cart extends Model
         );
     }
     
-    public function products(): HasMany
+    function items(): HasMany
     {
-        return $this->hasMany(CartProduct::class);
+        return $this->hasMany(CartProduct::class)->with(['product']);
+    }
+
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class)->withPivot(['ammount', 'id']);
     }
 
     public function user(): BelongsTo

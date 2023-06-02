@@ -4,63 +4,53 @@ namespace App\Service;
 
 use App\DataObjects\CartDataObject;
 use App\DataObjects\CartProductDataObject;
+use App\DataObjects\ProductDataObject;
 use App\DataObjects\UserDataObject;
-use App\Models\Cart;
-use App\Models\CartProduct;
 use App\Models\Product;
+use App\Repository\CartProductRepository;
+use App\Repository\CartRepository;
 
 class CartService
 {
-    public function addProductToCart(UserDataObject $user)
-    {
-        //TODO: receive product as argument
-        $product = Product::where('name', 'ilike', '%teste%')->first();
-
-
-        $cart = $this->getOrCreateCart($user);
-        $addedProduct = $this->createProductCart($cart, $product);
-
-        return $addedProduct;
+    public function __construct(
+        public CartRepository $cartRepository,
+        public CartProductRepository $cartProductRepository
+    ) {
     }
 
-    public function getOrCreateCart(UserDataObject $user): CartDataObject
+    /**
+     * Display a cart with its products for a given user.
+     *
+     * @param UserDataObject $user
+     * @return CartDataObject
+     */
+    public function getCartWithProducts(UserDataObject $user)
     {
-        //TODO: move to a repository
-        $cart = Cart::firstOrCreate([
-            'user_id' => $user->id,
-        ]);
-
-        $cartData = new CartDataObject($cart->id, $cart->user_id);
-        return $cartData;
+        return $this->cartRepository->getUserCart($user);
     }
 
 
-    public function createProductCart(CartDataObject $cart, Product $product): CartProductDataObject
-    //TODO: cart service to add new product
+    public function addProductToCart(UserDataObject $user, ProductDataObject $product, $ammount)
     {
-        //TODO: move to a repository
-        $addedProduct = CartProduct::firstOrCreate(
-            [
-                'cart_id' => $cart->id,
-                'product_id' => $product->id
-            ],
-            [
-                'ammount' => 1,
-            ]
-        );
+        $cart = $this->cartRepository->getOrCreateCart($user);
+        $cartProduct = $this->cartProductRepository->getCartProductByProductAndCartId($product, $cart->id);
 
-        //business rules
-        if (!$addedProduct->wasRecentlyCreated) {
-            //TODO: move to a repository
-            $addedProduct->ammount += 1;
-            $addedProduct->save();
+        if (is_null($cartProduct)) {
+            $newCartProduct = new CartProductDataObject(
+                id: null,
+                ammount: $ammount,
+                cartId: $cart->id,
+                productId: $product->id,
+                product: $product
+            );
+
+            $addedProduct = $this->cartRepository->addProduct($cart, $newCartProduct);
+            return $addedProduct;
         }
-
-        return new CartProductDataObject(
-            id: $addedProduct->id,
-            ammount: $addedProduct->ammount,
-            cartId: $addedProduct->cart_id,
-            productId: $addedProduct->product_id,
-        );
+        
+        
+        //TODO: add logic to update the existing product on cart
+        //if produto already exist
+        //sum product ammount        
     }
 }
