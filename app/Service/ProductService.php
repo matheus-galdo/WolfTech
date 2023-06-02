@@ -10,9 +10,6 @@ use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-/**
- * service de auth
- */
 class ProductService
 {
     public function method()

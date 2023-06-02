@@ -4,11 +4,8 @@ namespace App\Repository;
 
 use App\DataObjects\CartDataObject;
 use App\DataObjects\CartProductDataObject;
-use App\DataObjects\ProductDataObject;
 use App\DataObjects\UserDataObject;
 use App\Models\Cart;
-use App\Models\CartProduct;
-use App\Models\Product;
 
 class CartRepository
 {
@@ -20,7 +17,6 @@ class CartRepository
     public function getUserCart(UserDataObject $user): CartDataObject
     {
         $cart = Cart::where('user_id', $user->id)->with(['products'])->firstOrFail();
-
         return new CartDataObject(
             id: $cart->id,
             userId: $cart->user_id,

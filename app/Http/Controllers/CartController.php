@@ -13,9 +13,17 @@ use Illuminate\Support\Facades\Auth;
 class CartController extends Controller
 {
     protected $user;
+    protected UserDataObject $userData;
+
     public function __construct(public CartService $cartService)
     {
         $this->user = Auth::user();
+        $this->userData = new UserDataObject(
+            id: $this->user->id,
+            name: $this->user->name,
+            email: $this->user->email,
+            password: '',
+        );
     }
 
 
@@ -25,14 +33,7 @@ class CartController extends Controller
      */
     public function getCart()
     {
-        $userData = new UserDataObject(
-            id: $this->user->id,
-            name: $this->user->name,
-            email: $this->user->email,
-            password: '',
-        );
-
-        $products = $this->cartService->getCartWithProducts($userData);
+        $products = $this->cartService->getCartWithProducts($this->userData);
         return response()->json(status: 200, data: $products);
     }
 
@@ -45,12 +46,6 @@ class CartController extends Controller
     public function addProduct(Request $request, Product $product)
     {
         $ammount = (int) $request->input('ammount');
-        $userData = new UserDataObject(
-            id: $this->user->id,
-            name: $this->user->name,
-            email: $this->user->email,
-            password: '',
-        );
 
         $productData = new ProductDataObject(
             id: $product->id,
@@ -60,7 +55,7 @@ class CartController extends Controller
             imageUrl: $product->imageUrl,
         );
 
-        $addedProduct = $this->cartService->addProductToCart($userData, $productData, $ammount);
+        $addedProduct = $this->cartService->addProductToCart($this->userData, $productData, $ammount);
         return response()->json(status: 201, data: $addedProduct);
     }
 

@@ -6,8 +6,6 @@ use App\DataObjects\CartDataObject;
 use App\DataObjects\CartProductDataObject;
 use App\DataObjects\ProductDataObject;
 use App\Models\CartProduct;
-use App\Models\Product;
-use Ramsey\Uuid\UuidInterface;
 
 class CartProductRepository
 {
@@ -25,14 +23,7 @@ class CartProductRepository
             'ammount' => $cartProduct->ammount,
         ]);
         
-        return new CartProductDataObject(
-            id: $cartProductAdded->id,
-            ammount: $cartProductAdded->ammount,
-            cartId: $cartProductAdded->cart_id,
-            productId: $cartProductAdded->product_id,
-
-            product: $cartProduct->product,
-        );
+        return $this->makeCartProductDataObject($cartProductAdded, $cartProduct->product);
     }
 
     /**
@@ -45,16 +36,10 @@ class CartProductRepository
         $cartProduct = CartProduct::with('product')->first($id);
 
         if (is_null($cartProduct)) {
-            return null;
+            return null; //TODO!: throw error?
         }
 
-        return new CartProductDataObject(
-            id: $cartProduct->id,
-            ammount: $cartProduct->ammount,
-            cartId: $cartProduct->cart_id,
-            productId: $cartProduct->product_id,
-            product: $cartProduct->product,
-        );
+        return $this->makeCartProductDataObject($cartProduct, $cartProduct->product);
     }
 
     /**
@@ -73,6 +58,17 @@ class CartProductRepository
             return null;
         }
 
+        return $this->makeCartProductDataObject($cartProduct, $product);
+    }
+
+    /**
+     * Instatiate the DTO to the cartProduct model
+     * @param mixed $cartProduct
+     * @param mixed $product
+     * @return CartProductDataObject
+     */
+    public function makeCartProductDataObject(mixed $cartProduct, $product)
+    {
         return new CartProductDataObject(
             id: $cartProduct->id,
             ammount: $cartProduct->ammount,

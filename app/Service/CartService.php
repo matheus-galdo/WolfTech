@@ -48,8 +48,9 @@ class CartService
             return $addedProduct;
         }
         
-
+        
+        //TODO: add logic to update the existing product on cart
         //if produto already exist
-            //sum product ammount
+        //sum product ammount        
     }
 }
