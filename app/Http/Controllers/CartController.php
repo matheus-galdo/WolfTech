@@ -13,39 +13,43 @@ use Ramsey\Uuid\Uuid;
 
 class CartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $user;
+    public function __construct(public CartService $cartService)
     {
-        //
+        $this->user = Auth::user();
+    }
+
+    /**
+     * Display a cart with its products for a given user.
+     */
+    public function getCart()
+    {
+        $userData = new UserDataObject(
+            id: $this->user->id,
+            name: $this->user->name,
+            email: $this->user->email,
+            password: '',
+        );
+
+        $products = $this->cartService->getCartWithProducts($userData);
+        return response()->json(status: 200, data: $products);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function addProduct(Request $request)
     {
-        $user = Auth::user();
 
         $userData = new UserDataObject(
-            id: $user->id,
-            name: $user->name,
-            email: $user->email,
+            id: $this->user->id,
+            name: $this->user->name,
+            email: $this->user->email,
             password: '',
         );
   
-        $cart = new CartService();
-        $addedProduct = $cart->addProductToCart($userData);
+        $addedProduct = $this->cartService->addProductToCart($userData);
         return response()->json(status: 201, data: $addedProduct);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\DataObjects;
 
+use JsonSerializable;
 use JustSteveKing\DataObjects\Contracts\DataObjectContract;
 use Ramsey\Uuid\UuidInterface;
 
-final class UserDataObject implements DataObjectContract
+final class UserDataObject implements DataObjectContract, JsonSerializable
 {
+    use HasSerialize;
     public function __construct(
         public readonly ?UuidInterface $id,
         public readonly string $name,
@@ -17,6 +19,10 @@ final class UserDataObject implements DataObjectContract
     ) {
     }
 
+    /**
+     * Serialize the DTO
+     * @return array
+     */
     public function toArray(): array
     {
         return [

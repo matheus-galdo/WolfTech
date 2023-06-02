@@ -8,59 +8,46 @@ use App\DataObjects\UserDataObject;
 use App\Models\Cart;
 use App\Models\CartProduct;
 use App\Models\Product;
+use App\Repository\CartRepository;
 
 class CartService
 {
+    public function __construct(
+        public CartRepository $cartRepository
+    ) {
+    }
+
+    /**
+     * Display a cart with its products for a given user.
+     *
+     * @param UserDataObject $user
+     * @return CartDataObject
+     */
+    public function getCartWithProducts(UserDataObject $user)
+    {
+        return $this->cartRepository->getUserCart($user);
+    }
+
+
     public function addProductToCart(UserDataObject $user)
     {
         //TODO: receive product as argument
         $product = Product::where('name', 'ilike', '%teste%')->first();
 
 
-        $cart = $this->getOrCreateCart($user);
-        $addedProduct = $this->createProductCart($cart, $product);
+        $cart = $this->cartRepository->getOrCreateCart($user);
+        // $addedProduct = $this->cartRepository->addProductToCart($cart, $product);
 
-        return $addedProduct;
+        // //business rules
+        // if (!$addedProduct->wasRecentlyCreated) {
+        //     //TODO: move to a repository
+        //     $addedProduct->ammount += 1;
+        //     $addedProduct->save();
+        // }
+
+        // return $addedProduct;
     }
 
-    public function getOrCreateCart(UserDataObject $user): CartDataObject
-    {
-        //TODO: move to a repository
-        $cart = Cart::firstOrCreate([
-            'user_id' => $user->id,
-        ]);
-
-        $cartData = new CartDataObject($cart->id, $cart->user_id);
-        return $cartData;
-    }
-
-
-    public function createProductCart(CartDataObject $cart, Product $product): CartProductDataObject
-    //TODO: cart service to add new product
-    {
-        //TODO: move to a repository
-        $addedProduct = CartProduct::firstOrCreate(
-            [
-                'cart_id' => $cart->id,
-                'product_id' => $product->id
-            ],
-            [
-                'ammount' => 1,
-            ]
-        );
-
-        //business rules
-        if (!$addedProduct->wasRecentlyCreated) {
-            //TODO: move to a repository
-            $addedProduct->ammount += 1;
-            $addedProduct->save();
-        }
-
-        return new CartProductDataObject(
-            id: $addedProduct->id,
-            ammount: $addedProduct->ammount,
-            cartId: $addedProduct->cart_id,
-            productId: $addedProduct->product_id,
-        );
-    }
+    
+    
 }
