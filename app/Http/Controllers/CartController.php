@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\DataObjects\CartProductDataObject;
+use App\DataObjects\ProductDataObject;
 use App\DataObjects\UserDataObject;
+use App\Models\Product;
 use App\Service\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +18,10 @@ class CartController extends Controller
         $this->user = Auth::user();
     }
 
+
     /**
      * Display a cart with its products for a given user.
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getCart()
     {
@@ -32,19 +37,30 @@ class CartController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Add a new Product to the user cart
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Product $product
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function addProduct(Request $request)
+    public function addProduct(Request $request, Product $product)
     {
-
+        $ammount = (int) $request->input('ammount');
         $userData = new UserDataObject(
             id: $this->user->id,
             name: $this->user->name,
             email: $this->user->email,
             password: '',
         );
-  
-        $addedProduct = $this->cartService->addProductToCart($userData);
+
+        $productData = new ProductDataObject(
+            id: $product->id,
+            name: $product->name,
+            description: $product->description,
+            price: $product->price,
+            imageUrl: $product->imageUrl,
+        );
+
+        $addedProduct = $this->cartService->addProductToCart($userData, $productData, $ammount);
         return response()->json(status: 201, data: $addedProduct);
     }
 

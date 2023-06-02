@@ -42,29 +42,16 @@ class CartRepository
         return new CartDataObject($cart->id, $cart->user_id);
     }
 
-    public function createProductCart(CartDataObject $cart, Product $product): CartProductDataObject
+    /**
+     * Create a new CartProduct
+     *
+     * @param CartDataObject $cart
+     * @param CartProductDataObject $product
+     * @return CartProductDataObject
+     */
+    public function addProduct(CartDataObject $cart, CartProductDataObject $cartProduct): CartProductDataObject
     {
-        //TODO: move to another repository?
-        $addedProduct = CartProduct::create([
-            'cart_id' => $cart->id,
-            'product_id' => $product->id,
-            'ammount' => 1,
-        ]);
-
-        $productData = new ProductDataObject(
-            id: $product->id,
-            name: $product->name,
-            description: $product->description,
-            price: $product->price,
-            imageUrl: $product->imageUrl
-        );
-
-        return new CartProductDataObject(
-            id: $addedProduct->id,
-            ammount: $addedProduct->ammount,
-            cartId: $addedProduct->cart_id,
-            productId: $addedProduct->product_id,
-            product: $productData
-        );
+        $cartProductRepository = new CartProductRepository();
+        return $cartProductRepository->createCartProduct($cart, $cartProduct);
     }
 }

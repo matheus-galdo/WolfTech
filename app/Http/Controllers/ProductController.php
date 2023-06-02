@@ -26,6 +26,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        //TODO: add admin crud to manage products
         Product::create([
             'name' => 'teste',
             'description' => 'teste',
