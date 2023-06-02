@@ -3,10 +3,7 @@
 namespace App\Service;
 
 use App\DataObjects\CartDataObject;
-use App\DataObjects\CartProductDataObject;
 use App\DataObjects\UserDataObject;
-use App\Models\Cart;
-use App\Models\CartProduct;
 use App\Models\Product;
 use App\Repository\CartRepository;
 
@@ -47,7 +44,4 @@ class CartService
 
         // return $addedProduct;
     }
-
-    
-    
 }

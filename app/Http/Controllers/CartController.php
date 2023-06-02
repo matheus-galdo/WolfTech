@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\DataObjects\UserDataObject;
-use App\Models\Cart;
-use App\Models\CartProduct;
-use App\Models\Product;
 use App\Service\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Ramsey\Uuid\Uuid;
 
 class CartController extends Controller
 {
