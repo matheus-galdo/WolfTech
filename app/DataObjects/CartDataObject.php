@@ -29,10 +29,7 @@ final class CartDataObject implements DataObjectContract, JsonSerializable
             'userId' => $this->userId,
         ];
 
-        if (count($this->cartProducts) > 0) {
-            $cart['cartProducts'] = $this->parseProducts();
-        }
-
+        $cart['cartProducts'] = $this->parseProducts();
         return $cart;
     }
 

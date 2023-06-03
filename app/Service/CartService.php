@@ -30,7 +30,14 @@ class CartService
     }
 
 
-    public function addProductToCart(UserDataObject $user, ProductDataObject $product, $ammount)
+    /**
+     * Adds or increase the ammount of a ProductCart for a given product
+     * @param \App\DataObjects\UserDataObject $user
+     * @param \App\DataObjects\ProductDataObject $product
+     * @param mixed $ammount
+     * @return CartProductDataObject
+     */
+    public function addProductToCart(UserDataObject $user, ProductDataObject $product, int $ammount)
     {
         $cart = $this->cartRepository->getOrCreateCart($user);
         $cartProduct = $this->cartProductRepository->getCartProductByProductAndCartId($product, $cart->id);
@@ -48,9 +55,8 @@ class CartService
             return $addedProduct;
         }
         
-        
-        //TODO: add logic to update the existing product on cart
-        //if produto already exist
-        //sum product ammount        
+        $newAmmount = $cartProduct->ammount + $ammount;
+        $addedProduct = $this->cartProductRepository->updateAmmount($cartProduct, $newAmmount);
+        return $addedProduct;
     }
 }

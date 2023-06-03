@@ -22,7 +22,7 @@ class CartProductRepository
             'product_id' => $cartProduct->product->id,
             'ammount' => $cartProduct->ammount,
         ]);
-        
+
         return $this->makeCartProductDataObject($cartProductAdded, $cartProduct->product);
     }
 
@@ -59,6 +59,21 @@ class CartProductRepository
         }
 
         return $this->makeCartProductDataObject($cartProduct, $product);
+    }
+
+    /**
+     * Updates the ammount column of a given cartProduct
+     * @param \App\DataObjects\CartProductDataObject $cartProduct
+     * @param mixed $newAmmount
+     * @return CartProductDataObject
+     */
+    public function updateAmmount(CartProductDataObject $cartProduct, int $newAmmount)
+    {
+        CartProduct::where('id', $cartProduct->id)
+            ->update(['ammount' => $newAmmount]);
+
+        $updatedCartProduct = CartProduct::with('product')->find($cartProduct->id);
+        return $this->makeCartProductDataObject($updatedCartProduct, $updatedCartProduct->product);
     }
 
     /**
