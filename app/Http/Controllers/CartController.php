@@ -26,7 +26,6 @@ class CartController extends Controller
         );
     }
 
-
     /**
      * Display a cart with its products for a given user.
      * @return \Illuminate\Http\JsonResponse
