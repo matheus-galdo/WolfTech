@@ -19,6 +19,19 @@ final class UserDataObject implements DataObjectContract, JsonSerializable
     ) {
     }
 
+    public static function buildFromInput (
+        string $name,
+        string $email,
+        string $password,
+    ){
+        return new UserDataObject(
+            id:  null,
+            name: $name,
+            email: $email,
+            password: $password,
+        );
+    }
+
     /**
      * Serialize the DTO
      * @return array

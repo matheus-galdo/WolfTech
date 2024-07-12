@@ -17,7 +17,7 @@ class AuthController extends Controller
     }
 
     public function login(LoginRequest $request)
-    {        
+    {
         $requestCredentials = new UserCredentialsDataObject(
             email: $request->input('email'),
             password: $request->input('password'),
@@ -30,8 +30,7 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request): JsonResponse
     {
-        $requestCredentials = new UserDataObject(
-            id: null,
+        $requestCredentials = UserDataObject::buildFromInput(
             name: $request->input('name'),
             email: $request->input('email'),
             password: $request->input('password'),
