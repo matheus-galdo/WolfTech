@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\DataObjects\Inputs\InputProductDTO;
+use App\Http\Requests\CreateProductRequest;
 use App\Models\Product;
+use App\Service\ProductService;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
 
 class ProductController extends Controller
 {
+    public function __construct(
+        public readonly ProductService $productService
+    ) {
+    }
+    
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -20,27 +26,17 @@ class ProductController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
-        //TODO: add admin crud to manage products
-        Product::create([
-            'name' => 'teste',
-            'description' => 'teste',
-            'price' => 20,
-            'imageUrl' => '20',
-            'id' => Uuid::uuid4()
-        ]);
+        //TODO: add RBAC crud to manage products
+        $input = InputProductDTO::buildFromRequest($request);
+        $product = $this->productService->create($input);
+        return response()->json($product);
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Model\Product  $product
-     * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
     {
@@ -49,10 +45,6 @@ class ProductController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\Product  $product
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product)
     {
@@ -61,9 +53,6 @@ class ProductController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Model\Product  $product
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Product $product)
     {

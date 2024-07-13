@@ -6,6 +6,9 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+require __DIR__ ."/ApiRoutes/AdminRoutes.php";
+require __DIR__ ."/ApiRoutes/StoreRoutes.php";
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,21 +20,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/health', function () {
     return response()->json(["message" => "ok"]);
 });
 
-//public routes
-Route::get('products', [ProductController::class, 'index']);
-Route::get('products/{product}', [ProductController::class, 'show']);
-
-// protected routes
-Route::middleware(['auth:api'])->group(function () {
-    Route::get('teste', [ProductController::class, 'store']);
-
-    Route::post('cart/{product}', [CartController::class, 'addProduct']);
-    Route::get('cart', [CartController::class, 'getCart']);
-});
+AdminRoutes::registerRoutes();
+StoreRoutes::registerRoutes();
 
 //auth routes
 Route::post('login', [AuthController::class, 'login']);

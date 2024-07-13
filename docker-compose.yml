@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres
+    container_name: wolftech_postgres
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pg:/var/lib/postgresql/data
+    networks:
+      - wolftech_network
+
+  laravel_app:
+    container_name: wolftech-app
+    build: .
+    env_file: .env
+    ports:
+    - 8000:8000
+    networks:
+      - wolftech_network
+    depends_on:
+      - postgres
+    volumes:
+      - ./:/app
+
+
+volumes:
+  pg:
+    name: wolftech-pg-volume
+
+networks:
+  wolftech_network:
+    name: wolftech_network

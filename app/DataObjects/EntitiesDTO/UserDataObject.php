@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\DataObjects;
+namespace App\DataObjects\EntitiesDTO;
 
+use App\DataObjects\HasSerialize;
 use JsonSerializable;
 use JustSteveKing\DataObjects\Contracts\DataObjectContract;
 use Ramsey\Uuid\UuidInterface;
@@ -17,6 +18,19 @@ final class UserDataObject implements DataObjectContract, JsonSerializable
         public readonly string $email,
         public readonly string $password,
     ) {
+    }
+
+    public static function buildFromInput (
+        string $name,
+        string $email,
+        string $password,
+    ){
+        return new UserDataObject(
+            id:  null,
+            name: $name,
+            email: $email,
+            password: $password,
+        );
     }
 
     /**

@@ -2,18 +2,19 @@
 
 namespace App\Service;
 
-use App\DataObjects\UserCredentialsDataObject;
-use App\Models\User;
-use App\DataObjects\UserDataObject;
-use App\Exceptions\InvalidCredentialsException;
-use Ramsey\Uuid\Uuid;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use App\DataObjects\EntitiesDTO\ProductDataObject;
+use App\DataObjects\Inputs\InputProductDTO;
+use App\Repository\ProductRepository;
 
 class ProductService
 {
-    public function method()
+    public function __construct(
+        public ProductRepository $productRepository,
+    ) {
+    }
+
+    public function create(InputProductDTO $input): ProductDataObject
     {
-        
+        return $this->productRepository->create($input);
     }
 }

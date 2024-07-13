@@ -2,17 +2,21 @@
 
 namespace App\Repository;
 
-use App\DataObjects\CartDataObject;
-use App\DataObjects\CartProductDataObject;
-use App\DataObjects\UserDataObject;
+use App\DataObjects\EntitiesDTO\CartDataObject;
+use App\DataObjects\EntitiesDTO\CartProductDataObject;
+use App\DataObjects\EntitiesDTO\UserDataObject;
+use App\DataObjects\Inputs\CartProductInputDTO;
 use App\Models\Cart;
 
 class CartRepository
 {
+    public function __construct(
+        public readonly CartProductRepository $cartProductRepository
+    ) {
+    }
+
     /**
      * Return a CartDataObject with all its products
-     * @param \App\DataObjects\UserDataObject $user
-     * @return CartDataObject
      */
     public function getUserCart(UserDataObject $user): CartDataObject
     {
@@ -26,8 +30,6 @@ class CartRepository
 
     /**
      * Return a existing cart or create a new one and return it
-     * @param \App\DataObjects\UserDataObject $user
-     * @return \App\DataObjects\CartDataObject
      */
     public function getOrCreateCart(UserDataObject $user): CartDataObject
     {
@@ -40,14 +42,9 @@ class CartRepository
 
     /**
      * Create a new CartProduct
-     *
-     * @param CartDataObject $cart
-     * @param CartProductDataObject $product
-     * @return CartProductDataObject
      */
-    public function addProduct(CartDataObject $cart, CartProductDataObject $cartProduct): CartProductDataObject
+    public function addProduct(CartDataObject $cart, CartProductInputDTO $cartProduct): CartProductDataObject
     {
-        $cartProductRepository = new CartProductRepository();
-        return $cartProductRepository->createCartProduct($cart, $cartProduct);
+        return $this->cartProductRepository->createCartProduct($cart, $cartProduct);
     }
 }

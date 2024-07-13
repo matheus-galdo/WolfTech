@@ -3,7 +3,7 @@
 namespace App\DataObjects;
 
 /**
- * 
+ * Reusable serialize method for DTO's
  */
 trait HasSerialize
 {

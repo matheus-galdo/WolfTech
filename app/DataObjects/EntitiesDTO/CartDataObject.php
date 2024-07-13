@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\DataObjects;
+namespace App\DataObjects\EntitiesDTO;
 
+use App\DataObjects\HasSerialize;
 use JsonSerializable;
 use JustSteveKing\DataObjects\Contracts\DataObjectContract;
 use Ramsey\Uuid\UuidInterface;
@@ -12,7 +13,7 @@ final class CartDataObject implements DataObjectContract, JsonSerializable
 {
     use HasSerialize;
     public function __construct(
-        public readonly ?int $id,
+        public readonly int $id,
         public readonly UuidInterface $userId,
         public readonly mixed $cartProducts = []
     ) {
