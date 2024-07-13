@@ -40,6 +40,7 @@ class CartService
     public function addProductToCart(UserDataObject $user, ProductDataObject $product, int $ammount)
     {
         $cart = $this->cartRepository->getOrCreateCart($user);
+        //TODO: renomear essa função pra algo melhor
         $cartProduct = $this->cartProductRepository->getCartProductByProductAndCartId($product, $cart->id);
 
         if (is_null($cartProduct)) {

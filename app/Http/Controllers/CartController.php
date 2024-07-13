@@ -7,6 +7,7 @@ use App\DataObjects\ProductDataObject;
 use App\DataObjects\UserDataObject;
 use App\Models\Product;
 use App\Service\CartService;
+use App\Service\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,12 +40,14 @@ class CartController extends Controller
     /**
      * Add a new Product to the user cart
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Product $product
      * @return \Illuminate\Http\JsonResponse
      */
-    public function addProduct(Request $request, Product $product)
+    public function addProduct(Request $request)
     {
         $ammount = (int) $request->input('ammount');
+
+        //TODO: arrumar isso aqui, levare pro service
+        $product = Product::findOrFail($request->get('productId'));
 
         $productData = new ProductDataObject(
             id: $product->id,

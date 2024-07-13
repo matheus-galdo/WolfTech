@@ -27,13 +27,15 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //TODO: add admin crud to manage products
-        Product::create([
-            'name' => 'teste',
-            'description' => 'teste',
-            'price' => 20,
-            'imageUrl' => '20',
+        $product = Product::create([
+            'name' => $request->get('name') ?? 'teste',
+            'description' => $request->get('description') ??  'teste',
+            'price' => $request->get('price') ??  20,
+            'imageUrl' => $request->get('imageUrl') ??  '20',
             'id' => Uuid::uuid4()
         ]);
+
+        return response()->json($product);
     }
 
     /**
