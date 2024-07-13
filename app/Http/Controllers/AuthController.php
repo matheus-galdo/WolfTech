@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\DataObjects\UserCredentialsDataObject;
-use App\DataObjects\UserDataObject;
+use App\DataObjects\Inputs\UserCredentialsInputDTO;
+use App\DataObjects\Inputs\UserInputDTO;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Service\AuthService;
@@ -18,10 +18,7 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $requestCredentials = new UserCredentialsDataObject(
-            email: $request->input('email'),
-            password: $request->input('password'),
-        );
+        $requestCredentials = UserCredentialsInputDTO::buildFromRequest($request);
         
         $response = $this->authService->login($requestCredentials);
         return response()->json($response);
@@ -30,13 +27,9 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request): JsonResponse
     {
-        $requestCredentials = UserDataObject::buildFromInput(
-            name: $request->input('name'),
-            email: $request->input('email'),
-            password: $request->input('password'),
-        );
+        $userInput = UserInputDTO::buildFromRequest($request);
+        $response = $this->authService->register($userInput);
 
-        $response = $this->authService->register($requestCredentials);
         return response()->json(status: 201, data: $response);
     }
 

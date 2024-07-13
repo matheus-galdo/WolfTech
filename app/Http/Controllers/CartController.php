@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\DataObjects\CartProductDataObject;
-use App\DataObjects\ProductDataObject;
-use App\DataObjects\UserDataObject;
+use App\DataObjects\Inputs\CartProductInputDTO;
+use App\DataObjects\EntitiesDTO\UserDataObject;
+use App\DataObjects\EntitiesDTO\ProductDataObject;
+use App\Http\Requests\CartRequest;
 use App\Models\Product;
 use App\Service\CartService;
-use App\Service\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    protected $user;
-    protected UserDataObject $userData;
+    protected UserDataObject $user;
 
     public function __construct(public CartService $cartService)
     {
-        $this->user = Auth::user();
-        $this->userData = new UserDataObject(
-            id: $this->user->id,
-            name: $this->user->name,
-            email: $this->user->email,
+        $user = Auth::user();
+        $this->user = new UserDataObject(
+            id: $user->id,
+            name: $user->name,
+            email: $user->email,
             password: '',
         );
     }
@@ -33,7 +32,7 @@ class CartController extends Controller
      */
     public function getCart()
     {
-        $products = $this->cartService->getCartWithProducts($this->userData);
+        $products = $this->cartService->getCartWithProducts($this->user);
         return response()->json(status: 200, data: $products);
     }
 
@@ -42,22 +41,10 @@ class CartController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function addProduct(Request $request)
+    public function addProduct(CartRequest $request)
     {
-        $ammount = (int) $request->input('ammount');
-
-        //TODO: arrumar isso aqui, levare pro service
-        $product = Product::findOrFail($request->get('productId'));
-
-        $productData = new ProductDataObject(
-            id: $product->id,
-            name: $product->name,
-            description: $product->description,
-            price: $product->price,
-            imageUrl: $product->imageUrl,
-        );
-
-        $addedProduct = $this->cartService->addProductToCart($this->userData, $productData, $ammount);
+        $cartInput = CartProductInputDTO::buildFromRequest($request);
+        $addedProduct = $this->cartService->addProductToCart($this->user, $cartInput);
         return response()->json(status: 201, data: $addedProduct);
     }
 

@@ -2,10 +2,11 @@
 
 namespace App\Service;
 
-use App\DataObjects\CartDataObject;
-use App\DataObjects\CartProductDataObject;
-use App\DataObjects\ProductDataObject;
-use App\DataObjects\UserDataObject;
+use App\DataObjects\EntitiesDTO\CartDataObject;
+use App\DataObjects\EntitiesDTO\CartProductDataObject;
+use App\DataObjects\EntitiesDTO\ProductDataObject;
+use App\DataObjects\EntitiesDTO\UserDataObject;
+use App\DataObjects\Inputs\CartProductInputDTO;
 use App\Models\Product;
 use App\Repository\CartProductRepository;
 use App\Repository\CartRepository;
@@ -20,9 +21,6 @@ class CartService
 
     /**
      * Display a cart with its products for a given user.
-     *
-     * @param UserDataObject $user
-     * @return CartDataObject
      */
     public function getCartWithProducts(UserDataObject $user)
     {
@@ -32,32 +30,27 @@ class CartService
 
     /**
      * Adds or increase the ammount of a ProductCart for a given product
-     * @param \App\DataObjects\UserDataObject $user
-     * @param \App\DataObjects\ProductDataObject $product
-     * @param mixed $ammount
-     * @return CartProductDataObject
      */
-    public function addProductToCart(UserDataObject $user, ProductDataObject $product, int $ammount)
+    public function addProductToCart(UserDataObject $user, CartProductInputDTO $cartInput): CartProductDataObject
     {
+        $product = Product::findOrFail($cartInput->productId);
+        $productData = ProductDataObject::fromModel($product);
+
         $cart = $this->cartRepository->getOrCreateCart($user);
-        //TODO: renomear essa função pra algo melhor
-        $cartProduct = $this->cartProductRepository->getCartProductByProductAndCartId($product, $cart->id);
+        $cartProduct = $this->cartProductRepository->findCartProduct($productData, $cart->id);
 
         if (is_null($cartProduct)) {
-            $newCartProduct = new CartProductDataObject(
-                id: null,
-                ammount: $ammount,
+            $newCartProduct = new CartProductInputDTO(
+                ammount: $cartInput->ammount,
                 cartId: $cart->id,
                 productId: $product->id,
                 product: $product
             );
 
-            $addedProduct = $this->cartRepository->addProduct($cart, $newCartProduct);
-            return $addedProduct;
+            return $this->cartRepository->addProduct($cart, $newCartProduct);
         }
-        
-        $newAmmount = $cartProduct->ammount + $ammount;
-        $addedProduct = $this->cartProductRepository->updateAmmount($cartProduct, $newAmmount);
-        return $addedProduct;
+
+        $newAmmount = $cartProduct->ammount + $cartInput->ammount;
+        return $this->cartProductRepository->updateAmmount($cartProduct, $newAmmount);
     }
 }

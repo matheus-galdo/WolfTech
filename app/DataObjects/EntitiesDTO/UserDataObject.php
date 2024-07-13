@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\DataObjects;
+namespace App\DataObjects\EntitiesDTO;
 
+use App\DataObjects\HasSerialize;
 use JsonSerializable;
 use JustSteveKing\DataObjects\Contracts\DataObjectContract;
 use Ramsey\Uuid\UuidInterface;

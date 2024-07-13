@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\DataObjects;
+namespace App\DataObjects\EntitiesDTO;
 
+use App\DataObjects\HasSerialize;
+use App\Models\CartProduct;
 use App\Models\Product;
 use JsonSerializable;
 use JustSteveKing\DataObjects\Contracts\DataObjectContract;
@@ -15,7 +17,7 @@ final class CartProductDataObject implements DataObjectContract, JsonSerializabl
     
     use HasSerialize;
     public function __construct(
-        public readonly ?int $id,
+        public readonly int $id,
         public readonly int $ammount,
         public readonly int $cartId,
         public readonly UuidInterface $productId,
@@ -32,6 +34,18 @@ final class CartProductDataObject implements DataObjectContract, JsonSerializabl
             );
         }
     }
+
+    public static function fromModel(CartProduct $cartProduct, ProductDataObject|Product|null $product)
+    {
+        return new CartProductDataObject(
+            id: $cartProduct->id,
+            ammount: $cartProduct->ammount,
+            cartId: $cartProduct->cart_id,
+            productId: $cartProduct->product_id,
+            product: $product ?? null,
+        );
+    }
+
     /**
      * Serialize the DTO
      * @return array
