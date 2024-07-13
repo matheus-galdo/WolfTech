@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataObjects\Inputs\CartProductInputDTO;
 use App\DataObjects\EntitiesDTO\UserDataObject;
 use App\DataObjects\EntitiesDTO\ProductDataObject;
+use App\Http\Requests\CartAddProductRequest;
 use App\Http\Requests\CartRequest;
 use App\Models\Product;
 use App\Service\CartService;
@@ -28,7 +29,6 @@ class CartController extends Controller
 
     /**
      * Display a cart with its products for a given user.
-     * @return \Illuminate\Http\JsonResponse
      */
     public function getCart()
     {
@@ -38,10 +38,8 @@ class CartController extends Controller
 
     /**
      * Add a new Product to the user cart
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function addProduct(CartRequest $request)
+    public function addProduct(CartAddProductRequest $request)
     {
         $cartInput = CartProductInputDTO::buildFromRequest($request);
         $addedProduct = $this->cartService->addProductToCart($this->user, $cartInput);
